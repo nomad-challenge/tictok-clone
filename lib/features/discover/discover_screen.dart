@@ -54,8 +54,10 @@ class DiscoverScreen extends StatelessWidget {
                 childAspectRatio: 9 / 16,
               ),
               itemBuilder: (context, index) {
-                return Container(
-                  child: Image.asset("assets/images/tictok_placeholder.png"),
+                return FadeInImage.assetNetwork(
+                  placeholder: "assets/images/tictok_placeholder.png",
+                  image:
+                      "https://images.unsplash.com/photo-1701114413455-875c598cd407?q=80&w=2959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                 );
               }),
           for (var tab in tabs.skip(1))
