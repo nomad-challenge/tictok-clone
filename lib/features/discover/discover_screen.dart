@@ -55,10 +55,7 @@ class DiscoverScreen extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 return Container(
-                  color: Colors.teal,
-                  child: Center(
-                    child: Text("$index"),
-                  ),
+                  child: Image.asset("assets/images/tictok_placeholder.png"),
                 );
               }),
           for (var tab in tabs.skip(1))
