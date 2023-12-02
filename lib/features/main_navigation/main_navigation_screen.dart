@@ -16,7 +16,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   var screens = [
     const Center(
       child: Text("Home"),
@@ -68,7 +68,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
             Offstage(
               offstage: _selectedIndex != 1,
-              child: const DiscoverScreen(),
+              child: DiscoverScreen(),
             ),
             Offstage(
               offstage: _selectedIndex != 2,
