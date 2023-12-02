@@ -91,7 +91,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           ],
         ),
         bottomNavigationBar: BottomAppBar(
-          color: Colors.black,
+          color: _selectedIndex == 0 ? Colors.black : Colors.white,
           child: Padding(
             padding: const EdgeInsets.all(Sizes.size12),
             child: Row(
@@ -103,6 +103,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIcon: FontAwesomeIcons.house,
                   isSelected: _selectedIndex == 0,
                   onTap: () => _onTap(0),
+                  isInverted: _selectedIndex == 0,
                 ),
                 NavTab(
                   text: "Discover",
@@ -110,11 +111,14 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIcon: FontAwesomeIcons.solidCompass,
                   isSelected: _selectedIndex == 1,
                   onTap: () => _onTap(1),
+                  isInverted: _selectedIndex == 0,
                 ),
                 Gaps.h24,
                 GestureDetector(
                   onTap: _onPostVideoButtonTap,
-                  child: const PostVidewButton(),
+                  child: PostVidewButton(
+                    isInverted: _selectedIndex == 0,
+                  ),
                 ),
                 Gaps.h24,
                 NavTab(
@@ -123,6 +127,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIcon: FontAwesomeIcons.solidMessage,
                   isSelected: _selectedIndex == 3,
                   onTap: () => _onTap(3),
+                  isInverted: _selectedIndex == 0,
                 ),
                 NavTab(
                   text: "Profile",
@@ -130,6 +135,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                   selectedIcon: FontAwesomeIcons.solidUser,
                   isSelected: _selectedIndex == 4,
                   onTap: () => _onTap(4),
+                  isInverted: _selectedIndex == 0,
                 ),
               ],
             ),
