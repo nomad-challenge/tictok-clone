@@ -20,6 +20,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: false,
           primaryColor: Colors.blueAccent.shade700,
+          textSelectionTheme:
+              TextSelectionThemeData(cursorColor: Colors.blueAccent.shade700),
           appBarTheme: const AppBarTheme(
             foregroundColor: Colors.black,
             backgroundColor: Colors.white,

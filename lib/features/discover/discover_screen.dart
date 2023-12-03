@@ -1,11 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mynote/constants/gaps.dart';
 import 'package:mynote/constants/sizes.dart';
 
-class DiscoverScreen extends StatelessWidget {
-  DiscoverScreen({super.key});
+class DiscoverScreen extends StatefulWidget {
+  const DiscoverScreen({super.key});
 
+  @override
+  State<DiscoverScreen> createState() => _DiscoverScreenState();
+}
+
+class _DiscoverScreenState extends State<DiscoverScreen> {
   final tabs = [
     "Top",
     "Users",
@@ -16,6 +22,23 @@ class DiscoverScreen extends StatelessWidget {
     "Brands",
   ];
 
+  final TextEditingController _textEditingController =
+      TextEditingController(text: "Initial Text");
+
+  void _onSearchChanged(String text) {
+    print("_onSearchChanged:$text");
+  }
+
+  void _onSearchSumitted(String text) {
+    print("_onSearchSumitted:$text");
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -23,7 +46,11 @@ class DiscoverScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           elevation: 1,
-          title: const Text("Discover"),
+          title: CupertinoSearchTextField(
+            controller: _textEditingController,
+            onChanged: _onSearchChanged,
+            onSubmitted: _onSearchSumitted,
+          ),
           bottom: TabBar(
               splashFactory: NoSplash.splashFactory,
               padding: const EdgeInsets.symmetric(
