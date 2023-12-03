@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.blueAccent.shade700,
           textSelectionTheme:
               TextSelectionThemeData(cursorColor: Colors.blueAccent.shade700),
+          splashColor: Colors.transparent, // 버튼 클릭시 번지는 효과 제거
           appBarTheme: const AppBarTheme(
             foregroundColor: Colors.black,
             backgroundColor: Colors.white,
