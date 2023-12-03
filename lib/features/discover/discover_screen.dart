@@ -73,6 +73,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
         ),
         body: TabBarView(children: [
           GridView.builder(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               padding: const EdgeInsets.all(
                 Sizes.size6,
               ),
