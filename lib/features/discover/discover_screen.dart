@@ -1,12 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mynote/constants/gaps.dart';
 import 'package:mynote/constants/sizes.dart';
 
 class DiscoverScreen extends StatefulWidget {
-  const DiscoverScreen({super.key});
+  const DiscoverScreen({super.key, required this.goBack});
 
+  final void Function(int) goBack;
   @override
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
@@ -23,8 +23,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     "Brands",
   ];
 
-  final TextEditingController _textEditingController =
-      TextEditingController(text: "Initial Text");
+  bool _isWritting = false;
+
+  final TextEditingController _textEditingController = TextEditingController();
 
   late TabController _tabController;
   void _onSearchChanged(String text) {
@@ -37,6 +38,9 @@ class _DiscoverScreenState extends State<DiscoverScreen>
 
   void _onBodyTap() {
     FocusScope.of(context).unfocus();
+    setState(() {
+      _isWritting = true;
+    });
   }
 
   @override
@@ -45,8 +49,10 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     _tabController = TabController(length: tabs.length, vsync: this);
     _tabController.addListener(() {
       if (!_tabController.indexIsChanging) {
-        print("fffff");
         FocusScope.of(context).unfocus();
+        setState(() {
+          _isWritting = true;
+        });
       }
     });
   }
@@ -58,6 +64,22 @@ class _DiscoverScreenState extends State<DiscoverScreen>
     super.dispose();
   }
 
+  void _onStartTap() {
+    print("stat");
+    setState(() {
+      _isWritting = true;
+    });
+  }
+
+  void _onSearchClearTap() {
+    print("clear");
+    _textEditingController.clear();
+  }
+
+  void _onBackTap() {
+    widget.goBack(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -66,11 +88,62 @@ class _DiscoverScreenState extends State<DiscoverScreen>
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 1,
-          title: CupertinoSearchTextField(
-            controller: _textEditingController,
-            onChanged: _onSearchChanged,
-            onSubmitted: _onSearchSumitted,
-          ),
+          title: Row(children: [
+            GestureDetector(
+              onTap: _onBackTap,
+              child: const FaIcon(
+                FontAwesomeIcons.angleLeft,
+              ),
+            ),
+            Gaps.h20,
+            Expanded(
+              child: SizedBox(
+                height: Sizes.size44,
+                child: TextField(
+                  onTap: _onStartTap,
+                  controller: _textEditingController,
+                  style: const TextStyle(
+                    fontSize: Sizes.size16 + Sizes.size2,
+                  ),
+                  decoration: InputDecoration(
+                    focusColor: Colors.red,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(Sizes.size4),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintText: "Search",
+                    filled: true,
+                    fillColor: Colors.grey.shade300,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.size10,
+                    ),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.all(Sizes.size10),
+                      child: FaIcon(
+                        FontAwesomeIcons.magnifyingGlass,
+                        color: Colors.black,
+                      ),
+                    ),
+                    suffixIcon: _isWritting
+                        ? Padding(
+                            padding: const EdgeInsets.all(Sizes.size10),
+                            child: GestureDetector(
+                              onTap: _onSearchClearTap,
+                              child: FaIcon(
+                                FontAwesomeIcons.solidCircleXmark,
+                                color: Colors.grey.shade600,
+                                // size: Sizes.size24,
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
+                ),
+              ),
+            ),
+            Gaps.h20,
+            const FaIcon(FontAwesomeIcons.baby)
+          ]),
           bottom: TabBar(
               controller: _tabController,
               splashFactory: NoSplash.splashFactory,

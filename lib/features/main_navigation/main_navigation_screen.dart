@@ -68,7 +68,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             ),
             Offstage(
               offstage: _selectedIndex != 1,
-              child: DiscoverScreen(),
+              child: DiscoverScreen(goBack: _onTap),
             ),
             Offstage(
               offstage: _selectedIndex != 2,
