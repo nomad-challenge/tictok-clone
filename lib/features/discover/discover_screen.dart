@@ -11,7 +11,8 @@ class DiscoverScreen extends StatefulWidget {
   State<DiscoverScreen> createState() => _DiscoverScreenState();
 }
 
-class _DiscoverScreenState extends State<DiscoverScreen> {
+class _DiscoverScreenState extends State<DiscoverScreen>
+    with SingleTickerProviderStateMixin {
   final tabs = [
     "Top",
     "Users",
@@ -25,6 +26,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
   final TextEditingController _textEditingController =
       TextEditingController(text: "Initial Text");
 
+  late TabController _tabController;
   void _onSearchChanged(String text) {
     print("_onSearchChanged:$text");
   }
@@ -33,9 +35,26 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
     print("_onSearchSumitted:$text");
   }
 
+  void _onBodyTap() {
+    FocusScope.of(context).unfocus();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: tabs.length, vsync: this);
+    _tabController.addListener(() {
+      if (!_tabController.indexIsChanging) {
+        print("fffff");
+        FocusScope.of(context).unfocus();
+      }
+    });
+  }
+
   @override
   void dispose() {
     _textEditingController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -53,6 +72,7 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
             onSubmitted: _onSearchSumitted,
           ),
           bottom: TabBar(
+              controller: _tabController,
               splashFactory: NoSplash.splashFactory,
               padding: const EdgeInsets.symmetric(
                 horizontal: Sizes.size16,
@@ -71,94 +91,101 @@ class _DiscoverScreenState extends State<DiscoverScreen> {
                   )
               ]),
         ),
-        body: TabBarView(children: [
-          GridView.builder(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.all(
-                Sizes.size6,
-              ),
-              itemCount: 20,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: Sizes.size10,
-                mainAxisSpacing: Sizes.size10,
-                childAspectRatio: 9 / 21,
-              ),
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Container(
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(Sizes.size4)),
-                      child: AspectRatio(
-                        aspectRatio: 9 / 16,
-                        child: FadeInImage.assetNetwork(
-                          fit: BoxFit.cover,
-                          placeholderFit: BoxFit.cover,
-                          placeholder: "assets/images/tictok_placeholder.png",
-                          image:
-                              "https://images.unsplash.com/photo-1701114413455-875c598cd407?q=80&w=2959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        body: GestureDetector(
+          onTap: _onBodyTap,
+          onPanStart: (details) {
+            print("test");
+          },
+          child: TabBarView(controller: _tabController, children: [
+            GridView.builder(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+                padding: const EdgeInsets.all(
+                  Sizes.size6,
+                ),
+                itemCount: 20,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: Sizes.size10,
+                  mainAxisSpacing: Sizes.size10,
+                  childAspectRatio: 9 / 21,
+                ),
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(Sizes.size4)),
+                        child: AspectRatio(
+                          aspectRatio: 9 / 16,
+                          child: FadeInImage.assetNetwork(
+                            fit: BoxFit.cover,
+                            placeholderFit: BoxFit.cover,
+                            placeholder: "assets/images/tictok_placeholder.png",
+                            image:
+                                "https://images.unsplash.com/photo-1701114413455-875c598cd407?q=80&w=2959&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                          ),
                         ),
                       ),
-                    ),
-                    Gaps.v10,
-                    const Text(
-                      "This is a long title. this is a long title. This is a long title. Oh My God. Very long.",
-                      style: TextStyle(
-                        fontSize: Sizes.size16 + Sizes.size2,
-                        fontWeight: FontWeight.bold,
+                      Gaps.v10,
+                      const Text(
+                        "This is a long title. this is a long title. This is a long title. Oh My God. Very long.",
+                        style: TextStyle(
+                          fontSize: Sizes.size16 + Sizes.size2,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                       ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    Gaps.v8,
-                    DefaultTextStyle(
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade600,
-                      ),
-                      child: Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 12,
-                            backgroundImage: NetworkImage(
-                                "https://avatars.githubusercontent.com/u/16436404?s=400&u=9f0093f6daa7368893efed2058ef043951d1ade2&v=4"),
-                          ),
-                          Gaps.h4,
-                          const Expanded(
-                            child: Text(
-                              "This is a my name. Very long name",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                      Gaps.v8,
+                      DefaultTextStyle(
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey.shade600,
+                        ),
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 12,
+                              backgroundImage: NetworkImage(
+                                  "https://avatars.githubusercontent.com/u/16436404?s=400&u=9f0093f6daa7368893efed2058ef043951d1ade2&v=4"),
                             ),
-                          ),
-                          Gaps.h4,
-                          FaIcon(
-                            FontAwesomeIcons.heart,
-                            size: Sizes.size16,
-                            color: Colors.grey.shade600,
-                          ),
-                          Gaps.h2,
-                          const Text(
-                            "2.5M",
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              }),
-          for (var tab in tabs.skip(1))
-            Center(
-              child: Text(
-                tab,
-                style: const TextStyle(
-                  fontSize: Sizes.size44,
+                            Gaps.h4,
+                            const Expanded(
+                              child: Text(
+                                "This is a my name. Very long name",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Gaps.h4,
+                            FaIcon(
+                              FontAwesomeIcons.heart,
+                              size: Sizes.size16,
+                              color: Colors.grey.shade600,
+                            ),
+                            Gaps.h2,
+                            const Text(
+                              "2.5M",
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                }),
+            for (var tab in tabs.skip(1))
+              Center(
+                child: Text(
+                  tab,
+                  style: const TextStyle(
+                    fontSize: Sizes.size44,
+                  ),
                 ),
-              ),
-            )
-        ]),
+              )
+          ]),
+        ),
       ),
     );
   }
