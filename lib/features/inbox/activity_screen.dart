@@ -15,6 +15,7 @@ class ActivityScreen extends StatefulWidget {
 
 class _ActivityScreenState extends State<ActivityScreen>
     with SingleTickerProviderStateMixin {
+  bool _showBarrier = false;
   late final AnimationController _animationController = AnimationController(
     vsync: this,
     duration: const Duration(
@@ -29,6 +30,12 @@ class _ActivityScreenState extends State<ActivityScreen>
     begin: const Offset(0.0, -1.0),
     end: Offset.zero,
   ).animate(_animationController);
+
+  late final Animation<Color?> __colorModarBarrier = ColorTween(
+    begin: Colors.transparent,
+    end: Colors.black38,
+  ).animate(_animationController);
+
   final List<String> _notifications = List.generate(
     20,
     (index) => "${index}h",
@@ -65,12 +72,21 @@ class _ActivityScreenState extends State<ActivityScreen>
     setState(() {});
   }
 
-  void _onTitleTap() {
+  void _onToggleAnimation() async {
     if (_animationController.isCompleted) {
-      _animationController.reverse();
+      await _animationController.reverse();
     } else {
       _animationController.forward();
     }
+    setState(() {
+      _showBarrier = !_showBarrier;
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,7 +94,7 @@ class _ActivityScreenState extends State<ActivityScreen>
     return Scaffold(
       appBar: AppBar(
         title: GestureDetector(
-          onTap: _onTitleTap,
+          onTap: _onToggleAnimation,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -186,6 +202,12 @@ class _ActivityScreenState extends State<ActivityScreen>
                 )
             ],
           ),
+          if (_showBarrier)
+            AnimatedModalBarrier(
+              color: __colorModarBarrier,
+              dismissible: true,
+              onDismiss: _onToggleAnimation,
+            ),
           SlideTransition(
             position: _pannelAnimation,
             child: Container(
