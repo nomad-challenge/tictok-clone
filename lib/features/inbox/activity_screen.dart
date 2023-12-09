@@ -97,6 +97,7 @@ class _ActivityScreenState extends State<ActivityScreen>
           onTap: _onToggleAnimation,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               const Text("All activity"),
               RotationTransition(
