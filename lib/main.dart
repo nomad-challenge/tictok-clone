@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mynote/constants/sizes.dart';
 import 'package:mynote/features/authentication/sign_up_screen.dart';
+import 'package:mynote/features/inbox/activity_screen.dart';
 import 'package:mynote/features/main_navigation/main_navigation_screen.dart';
 
 void main() {
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
               color: Colors.black,
             ),
           )),
-      home: const MainNavigationScreen(),
+      home: const ActivityScreen(),
     );
   }
 }
