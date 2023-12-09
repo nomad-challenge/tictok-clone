@@ -1,14 +1,19 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mynote/constants/sizes.dart';
 import 'package:mynote/features/inbox/activity_screen.dart';
+import 'package:mynote/features/inbox/chats_screen.dart';
 
 class InboxScreen extends StatelessWidget {
   const InboxScreen({super.key});
 
-  void _onDmPressed() {
+  void _onDmPressed(BuildContext context) {
     print("send DM");
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: ((context) => const ChatsScreen()),
+      ),
+    );
   }
 
   void _onActivityTap(BuildContext context) {
@@ -27,7 +32,7 @@ class InboxScreen extends StatelessWidget {
         elevation: 1,
         actions: [
           IconButton(
-            onPressed: _onDmPressed,
+            onPressed: () => _onDmPressed(context),
             icon: const FaIcon(FontAwesomeIcons.paperPlane),
           ),
         ],

@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
               color: Colors.black,
             ),
           )),
-      home: const ActivityScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
