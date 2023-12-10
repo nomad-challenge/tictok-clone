@@ -43,6 +43,65 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           ),
         ),
       ),
+      body: Stack(
+        children: [
+          ListView.separated(
+            itemBuilder: (context, index) {
+              final bool isMine = index % 2 == 0;
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment:
+                    isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: Sizes.size10,
+                    ),
+                    child: Container(
+                      padding: const EdgeInsets.all(
+                        Sizes.size14,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isMine
+                            ? Theme.of(context).primaryColor
+                            : Colors.red,
+                        borderRadius: BorderRadius.only(
+                          topLeft: const Radius.circular(
+                            Sizes.size20,
+                          ),
+                          topRight: const Radius.circular(
+                            Sizes.size20,
+                          ),
+                          bottomLeft: isMine
+                              ? const Radius.circular(
+                                  Sizes.size20,
+                                )
+                              : Radius.zero,
+                          bottomRight: isMine
+                              ? Radius.zero
+                              : const Radius.circular(
+                                  Sizes.size20,
+                                ),
+                        ),
+                      ),
+                      child: const Text(
+                        "This is a message!",
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: Sizes.size16,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+            separatorBuilder: (context, index) => Gaps.v10,
+            itemCount: 20,
+          ),
+        ],
+      ),
     );
   }
 }
